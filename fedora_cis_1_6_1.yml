@@ -1,0 +1,12 @@
+---
+
+- name: Enforce CIS control 1.6.1
+  hosts: fedora
+  become: yes
+
+  tasks:
+  - name: Update fs.suid_dumpable
+    sysctl: 
+      name: fs.suid_dumpable
+      value: '0'
+      state: present
