@@ -1,6 +1,6 @@
 ---
-- name: Manage system
-  hosts: all
+- name: Manage fedora systems
+  hosts: fedora
   become: yes
 
   tasks:
