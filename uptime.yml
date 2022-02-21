@@ -1,0 +1,13 @@
+---
+
+- name: Get uptime
+  hosts: all
+
+  tasks:
+  - name: Invoke uptime
+    command: uptime
+    register: r_uptime
+
+  - name: print uptime result
+    debug:
+      msg: "{{ r_uptime }}"

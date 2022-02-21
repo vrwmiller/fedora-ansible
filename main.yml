@@ -1,0 +1,44 @@
+---
+- name: Manage system
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Ensure packages are installed
+    dnf:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - git
+      - nc
+      - nmap
+      - tcpdump
+
+  - name: Ensure these packages are absent
+    dnf:
+      name: "{{ item }}"
+      state: absent
+    with_items:
+      - nfs-utils
+
+  - name: Update installed packages
+    dnf:
+      name: "*"
+      state: latest
+    register: result
+    ignore_errors: yes
+    notify: Reboot
+
+  - name: Invoke uptime
+    command: uptime
+    register: r_uptime
+    tags: [ 'never', 'uptime' ]
+
+  - name: print uptime result
+    debug:
+      msg: "{{ r_uptime }}"
+    tags: [ 'never', 'uptime' ]
+
+  handlers:
+    - name: Reboot
+      reboot:
